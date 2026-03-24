@@ -18,13 +18,10 @@ import Dashboard from './pages/Dashboard';
 const Navbar = () => (
   <nav className="fixed top-0 w-full z-50 glass-nav border-b border-outline/10">
     <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <Link to="/" className="text-xl font-semibold tracking-tighter">The Curated Estate</Link>
+      <Link to="/" className="text-3xl font-normal font-signature">The Curated Estate</Link>
       
       <div className="hidden md:flex items-center gap-10">
         <Link to="/" className="text-sm font-medium border-b-2 border-primary pb-1">Properties</Link>
-        <Link to="/dashboard" className="text-sm font-medium text-outline hover:text-primary transition-colors">Dashboard</Link>
-        <a href="#" className="text-sm font-medium text-outline hover:text-primary transition-colors">Journal</a>
-        <a href="#" className="text-sm font-medium text-outline hover:text-primary transition-colors">About</a>
       </div>
 
       <div className="flex items-center gap-6">
@@ -46,9 +43,6 @@ const Hero = () => (
         transition={{ duration: 0.8 }}
         className="lg:col-span-6 z-10"
       >
-        <span className="inline-block px-3 py-1 bg-primary-fixed text-primary text-[10px] font-bold uppercase tracking-[0.2em] rounded-full mb-8">
-          Redefining Excellence
-        </span>
         <h1 className="text-6xl md:text-8xl font-medium leading-[1.05] tracking-tighter mb-8">
           The art of <br />
           <span className="text-primary italic">living</span> well.
@@ -76,7 +70,7 @@ const Hero = () => (
         <div className="absolute inset-0 right-0 left-12 top-12 bottom-0 rounded-tl-[120px] overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1600607687940-467f5b637a51?auto=format&fit=crop&q=80&w=2000" 
-            alt="Modern Architecture"
+            alt="Luxury Estate"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
@@ -219,7 +213,7 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto px-6">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
         <div className="md:col-span-5">
-          <div className="text-2xl font-bold mb-8 tracking-tighter">The Curated Estate</div>
+          <div className="text-4xl font-normal font-signature mb-8">The Curated Estate</div>
           <p className="text-on-surface-variant max-w-sm leading-relaxed mb-10">
             Founded on the principles of architectural integrity and bespoke service. We represent the world's most significant homes with the reverence they deserve.
           </p>
@@ -288,22 +282,6 @@ const Home = () => (
           {PROPERTIES.map(property => (
             <PropertyCard key={property.id} property={property} />
           ))}
-        </div>
-      </section>
-
-      <section className="bg-surface-container py-32">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <h2 className="text-4xl md:text-5xl font-medium tracking-tighter mb-6">Meet Our Curators</h2>
-            <p className="text-on-surface-variant">
-              Our agents are more than facilitators—they are architectural historians, lifestyle designers, and your dedicated partners in real estate.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {AGENTS.map(agent => (
-              <AgentCard key={agent.id} agent={agent} />
-            ))}
-          </div>
         </div>
       </section>
 

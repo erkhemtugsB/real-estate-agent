@@ -48,24 +48,43 @@ const PropertyDetail = () => {
               </button>
             </div>
           </div>
-          <div className="lg:col-span-4 grid grid-rows-2 gap-6">
-            <div className="rounded-3xl overflow-hidden">
+          <div className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-6">
+            <div className="rounded-3xl overflow-hidden aspect-square lg:aspect-auto">
               <img 
                 src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&q=80&w=1000" 
-                alt="Interior"
+                alt="Interior 1"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div className="rounded-3xl overflow-hidden">
+            <div className="rounded-3xl overflow-hidden aspect-square lg:aspect-auto">
               <img 
                 src="https://images.unsplash.com/photo-1600585154526-990dcea4db0d?auto=format&fit=crop&q=80&w=1000" 
-                alt="Kitchen"
+                alt="Interior 2"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
             </div>
           </div>
+        </section>
+
+        {/* Extended Gallery */}
+        <section className="max-w-7xl mx-auto px-6 pb-12 grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[
+            "https://images.unsplash.com/photo-1600607687940-467f5b637a51?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&q=80&w=800"
+          ].map((img, i) => (
+            <div key={i} className="aspect-square rounded-2xl overflow-hidden">
+              <img 
+                src={img} 
+                alt={`Gallery ${i + 3}`}
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          ))}
         </section>
 
         {/* Content Section */}
@@ -114,7 +133,6 @@ const PropertyDetail = () => {
             </div>
 
             <div className="prose prose-lg max-w-none">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-outline mb-8">The Architecture</h3>
               <p className="text-2xl font-light italic leading-relaxed text-on-surface mb-10">
                 "A poetic dialogue between structural permanence and the ephemeral shifting of coastal light."
               </p>
@@ -236,7 +254,7 @@ const PropertyDetail = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
             <div className="md:col-span-5">
-              <div className="text-2xl font-bold mb-8 tracking-tighter">The Curated Estate</div>
+              <div className="text-4xl font-normal font-signature mb-8">The Curated Estate</div>
               <p className="text-on-surface-variant max-w-sm leading-relaxed mb-10">
                 Defining the new standard for luxury real estate through architectural narrative and curated living experiences.
               </p>

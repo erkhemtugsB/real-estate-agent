@@ -10,7 +10,7 @@ const Dashboard = () => {
       {/* Sidebar */}
       <aside className="w-72 bg-white border-r border-outline/10 flex flex-col fixed h-full z-50">
         <div className="p-10 border-b border-outline/5">
-          <Link to="/" className="text-xl font-bold tracking-tighter block">The Curated Estate</Link>
+          <Link to="/" className="text-3xl font-normal font-signature block">The Curated Estate</Link>
         </div>
 
         <div className="p-8 border-b border-outline/5 flex items-center gap-4">
