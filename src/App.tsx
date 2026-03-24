@@ -3,24 +3,32 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import React from 'react';
 import { motion } from 'motion/react';
 import { Search, Menu, ArrowRight, Globe, Mail, MapPin, Instagram, Twitter, Linkedin, Star } from 'lucide-react';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { PROPERTIES, AGENTS } from './constants';
+import { Property, Agent } from './types';
+
+// Pages
+import SignIn from './pages/SignIn';
+import PropertyDetail from './pages/PropertyDetail';
+import Dashboard from './pages/Dashboard';
 
 const Navbar = () => (
   <nav className="fixed top-0 w-full z-50 glass-nav border-b border-outline/10">
     <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <div className="text-xl font-semibold tracking-tighter">The Curated Estate</div>
+      <Link to="/" className="text-xl font-semibold tracking-tighter">The Curated Estate</Link>
       
       <div className="hidden md:flex items-center gap-10">
-        <a href="#" className="text-sm font-medium border-b-2 border-primary pb-1">Properties</a>
-        <a href="#" className="text-sm font-medium text-outline hover:text-primary transition-colors">Agents</a>
+        <Link to="/" className="text-sm font-medium border-b-2 border-primary pb-1">Properties</Link>
+        <Link to="/dashboard" className="text-sm font-medium text-outline hover:text-primary transition-colors">Dashboard</Link>
         <a href="#" className="text-sm font-medium text-outline hover:text-primary transition-colors">Journal</a>
         <a href="#" className="text-sm font-medium text-outline hover:text-primary transition-colors">About</a>
       </div>
 
       <div className="flex items-center gap-6">
-        <button className="text-sm font-medium text-outline hover:text-primary transition-colors">Sign In</button>
+        <Link to="/signin" className="text-sm font-medium text-outline hover:text-primary transition-colors">Sign In</Link>
         <button className="bg-primary text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-primary-container transition-all active:scale-95">
           List Property
         </button>
@@ -105,70 +113,76 @@ const Hero = () => (
   </section>
 );
 
-const PropertyCard = ({ property }: { property: typeof PROPERTIES[0] }) => (
-  <motion.div 
-    whileHover={{ y: -8 }}
-    className={`group cursor-pointer ${
-      property.size === 'large' ? 'md:col-span-8' : 
-      property.size === 'wide' ? 'md:col-span-8' : 'md:col-span-4'
-    }`}
-  >
-    <div className={`relative overflow-hidden rounded-xl mb-6 ${
-      property.size === 'large' ? 'aspect-[16/9]' : 
-      property.size === 'medium' ? 'aspect-[4/5]' : 
-      property.size === 'small' ? 'aspect-square' : 'aspect-[21/9]'
-    }`}>
-      <img 
-        src={property.image} 
-        alt={property.title}
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        referrerPolicy="no-referrer"
-      />
-      {property.tags && (
-        <div className="absolute top-6 left-6 flex gap-2">
-          {property.tags.map(tag => (
-            <span key={tag} className={`px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${
-              tag === 'Exclusive' ? 'bg-primary/90 text-white' : 'bg-white/90 text-on-surface'
-            }`}>
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
-    <div className="flex justify-between items-start">
-      <div>
-        <h3 className="text-2xl font-medium mb-1">{property.title}</h3>
-        <p className="text-on-surface-variant text-sm">{property.location}</p>
+function PropertyCard({ property }: { property: Property }) {
+  const navigate = useNavigate();
+  return (
+    <motion.div 
+      whileHover={{ y: -8 }}
+      onClick={() => navigate(`/property/${property.id}`)}
+      className={`group cursor-pointer ${
+        property.size === 'large' ? 'md:col-span-8' : 
+        property.size === 'wide' ? 'md:col-span-8' : 'md:col-span-4'
+      }`}
+    >
+      <div className={`relative overflow-hidden rounded-xl mb-6 ${
+        property.size === 'large' ? 'aspect-[16/9]' : 
+        property.size === 'medium' ? 'aspect-[4/5]' : 
+        property.size === 'small' ? 'aspect-square' : 'aspect-[21/9]'
+      }`}>
+        <img 
+          src={property.image} 
+          alt={property.title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          referrerPolicy="no-referrer"
+        />
+        {property.tags && (
+          <div className="absolute top-6 left-6 flex gap-2">
+            {property.tags.map(tag => (
+              <span key={tag} className={`px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${
+                tag === 'Exclusive' ? 'bg-primary/90 text-white' : 'bg-white/90 text-on-surface'
+              }`}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
-      <span className="text-2xl font-light">{property.price}</span>
-    </div>
-  </motion.div>
-);
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className="text-2xl font-medium mb-1">{property.title}</h3>
+          <p className="text-on-surface-variant text-sm">{property.location}</p>
+        </div>
+        <span className="text-2xl font-light">{property.price}</span>
+      </div>
+    </motion.div>
+  );
+}
 
-const AgentCard = ({ agent }: { agent: typeof AGENTS[0] }) => (
-  <motion.div 
-    whileHover={{ y: -8 }}
-    className="bg-white p-10 rounded-xl text-center shadow-sm border border-outline/5"
-  >
-    <div className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden border-2 border-primary-fixed p-1">
-      <img 
-        src={agent.image} 
-        alt={agent.name}
-        className="w-full h-full object-cover rounded-full"
-        referrerPolicy="no-referrer"
-      />
-    </div>
-    <h4 className="text-2xl font-bold mb-1">{agent.name}</h4>
-    <p className="text-[10px] font-bold text-outline uppercase tracking-[0.2em] mb-6">{agent.specialty}</p>
-    <p className="text-sm text-on-surface-variant leading-relaxed mb-8 px-4">
-      {agent.description}
-    </p>
-    <button className="text-sm font-bold text-primary hover:underline underline-offset-8">
-      View Portfolio
-    </button>
-  </motion.div>
-);
+function AgentCard({ agent }: { agent: Agent }) {
+  return (
+    <motion.div 
+      whileHover={{ y: -8 }}
+      className="bg-white p-10 rounded-xl text-center shadow-sm border border-outline/5"
+    >
+      <div className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden border-2 border-primary-fixed p-1">
+        <img 
+          src={agent.image} 
+          alt={agent.name}
+          className="w-full h-full object-cover rounded-full"
+          referrerPolicy="no-referrer"
+        />
+      </div>
+      <h4 className="text-2xl font-bold mb-1">{agent.name}</h4>
+      <p className="text-[10px] font-bold text-outline uppercase tracking-[0.2em] mb-6">{agent.specialty}</p>
+      <p className="text-sm text-on-surface-variant leading-relaxed mb-8 px-4">
+        {agent.description}
+      </p>
+      <button className="text-sm font-bold text-primary hover:underline underline-offset-8">
+        View Portfolio
+      </button>
+    </motion.div>
+  );
+}
 
 const Newsletter = () => (
   <section className="py-24 max-w-7xl mx-auto px-6">
@@ -250,54 +264,63 @@ const Footer = () => (
   </footer>
 );
 
-export default function App() {
-  return (
-    <div className="min-h-screen">
-      <Navbar />
-      
-      <main>
-        <Hero />
+const Home = () => (
+  <div className="min-h-screen">
+    <Navbar />
+    
+    <main>
+      <Hero />
 
-        <section className="py-32 max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-            <div className="max-w-xl">
-              <h2 className="text-4xl md:text-5xl font-medium tracking-tighter mb-6">The Winter Collection</h2>
-              <p className="text-on-surface-variant leading-relaxed">
-                A hand-picked selection of properties that define architectural excellence and offer a sanctuary from the ordinary.
-              </p>
-            </div>
-            <a href="#" className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary border-b border-primary pb-1">
-              View All Properties
-            </a>
+      <section className="py-32 max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+          <div className="max-w-xl">
+            <h2 className="text-4xl md:text-5xl font-medium tracking-tighter mb-6">The Winter Collection</h2>
+            <p className="text-on-surface-variant leading-relaxed">
+              A hand-picked selection of properties that define architectural excellence and offer a sanctuary from the ordinary.
+            </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-            {PROPERTIES.map(property => (
-              <PropertyCard key={property.id} property={property} />
+          <a href="#" className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary border-b border-primary pb-1">
+            View All Properties
+          </a>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+          {PROPERTIES.map(property => (
+            <PropertyCard key={property.id} property={property} />
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-surface-container py-32">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-20">
+            <h2 className="text-4xl md:text-5xl font-medium tracking-tighter mb-6">Meet Our Curators</h2>
+            <p className="text-on-surface-variant">
+              Our agents are more than facilitators—they are architectural historians, lifestyle designers, and your dedicated partners in real estate.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {AGENTS.map(agent => (
+              <AgentCard key={agent.id} agent={agent} />
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="bg-surface-container py-32">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto mb-20">
-              <h2 className="text-4xl md:text-5xl font-medium tracking-tighter mb-6">Meet Our Curators</h2>
-              <p className="text-on-surface-variant">
-                Our agents are more than facilitators—they are architectural historians, lifestyle designers, and your dedicated partners in real estate.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              {AGENTS.map(agent => (
-                <AgentCard key={agent.id} agent={agent} />
-              ))}
-            </div>
-          </div>
-        </section>
+      <Newsletter />
+    </main>
 
-        <Newsletter />
-      </main>
+    <Footer />
+  </div>
+);
 
-      <Footer />
-    </div>
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/property/:id" element={<PropertyDetail />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
   );
 }
