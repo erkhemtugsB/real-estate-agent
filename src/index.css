@@ -1,9 +1,9 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Pinyon+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Dancing+Script:wght@400;500;600;700&display=swap');
 
 @theme {
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-signature: "Pinyon Script", cursive;
+  --font-signature: "Dancing Script", cursive;
   
   --color-primary: #273727;
   --color-primary-container: #3d4e3d;
