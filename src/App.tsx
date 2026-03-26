@@ -157,7 +157,7 @@ const Home = () => {
         <section className="py-24 max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
             <div>
-              <h2 className="text-2xl md:text-3xl font-semibold mb-2">Residence in Yogyakarta</h2>
+              <h2 className="text-2xl md:text-3xl font-semibold mb-2">Location</h2>
               <p className="text-on-surface-variant text-sm">
                 {isLoading ? 'Loading properties...' : `We found ${estates.length} properties`}
               </p>
