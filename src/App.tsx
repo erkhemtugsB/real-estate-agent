@@ -5,18 +5,20 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { Globe, Mail, MapPin, Instagram, Twitter, Linkedin, BedDouble, Bath, Square } from 'lucide-react';
+import { BedDouble, Bath, Square } from 'lucide-react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { PROPERTIES, AGENTS } from './constants';
-import { Property, Agent } from './types';
+import { Estate } from './types';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { supabase } from './lib/supabase';
+import { formatMNTCompact } from './lib/format';
 
 // Pages
 import SignIn from './pages/SignIn';
 import PropertyDetail from './pages/PropertyDetail';
 import Dashboard from './pages/Dashboard';
 import NewListing from './pages/NewListing';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const Hero = () => (
   <section className="relative pt-0 pb-0 overflow-hidden bg-[#f5f5f2] min-h-[80vh] flex items-center">
@@ -79,8 +81,14 @@ const Hero = () => (
   </section>
 );
 
-function PropertyCard({ property }: { property: Property }) {
+const formatArea = (value?: number | null) => {
+  if (value === null || value === undefined || Number.isNaN(value)) return '—';
+  return `${Number(value).toLocaleString()} м²`;
+};
+
+function PropertyCard({ property }: { property: Estate }) {
   const navigate = useNavigate();
+  const imageUrl = property.images?.[0];
   return (
     <motion.div 
       whileHover={{ y: -8 }}
@@ -89,7 +97,7 @@ function PropertyCard({ property }: { property: Property }) {
     >
       <div className="relative overflow-hidden rounded-2xl mb-5 aspect-[4/3]">
         <img 
-          src={property.image} 
+          src={imageUrl ?? '/person-shot.png'} 
           alt={property.title}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           referrerPolicy="no-referrer"
@@ -98,87 +106,79 @@ function PropertyCard({ property }: { property: Property }) {
       <div className="flex justify-between items-start gap-4">
         <div>
           <h3 className="text-lg font-semibold mb-1">{property.title}</h3>
-          <p className="text-on-surface-variant text-sm">{property.location}</p>
+          <p className="text-on-surface-variant text-sm">{property.location ?? '—'}</p>
         </div>
-        <span className="text-lg font-semibold">{property.price}</span>
+        <span className="text-lg font-semibold">{formatMNTCompact(property.price)}</span>
       </div>
       <div className="mt-3 flex items-center gap-4 text-[11px] uppercase tracking-[0.18em] text-outline/70">
         <span className="flex items-center gap-1">
-          <BedDouble className="w-3.5 h-3.5" /> 3
+          <BedDouble className="w-3.5 h-3.5" /> {property.bed ?? '—'}
         </span>
         <span className="flex items-center gap-1">
-          <Bath className="w-3.5 h-3.5" /> 2
+          <Bath className="w-3.5 h-3.5" /> {property.bath ?? '—'}
         </span>
         <span className="flex items-center gap-1">
-          <Square className="w-3.5 h-3.5" /> 410 m²
+          <Square className="w-3.5 h-3.5" /> {formatArea(property.area)}
         </span>
       </div>
     </motion.div>
   );
 }
 
-function AgentCard({ agent }: { agent: Agent }) {
+const Home = () => {
+  const [estates, setEstates] = React.useState<Estate[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const load = async () => {
+      const { data, error: fetchError } = await supabase
+        .from('estate')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (fetchError) {
+        setError(fetchError.message);
+        setIsLoading(false);
+        return;
+      }
+      setEstates((data as Estate[]) ?? []);
+      setIsLoading(false);
+    };
+    load();
+  }, []);
+
   return (
-    <motion.div 
-      whileHover={{ y: -8 }}
-      className="bg-white p-10 rounded-xl text-center shadow-sm border border-outline/5"
-    >
-      <div className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden border-2 border-primary-fixed p-1">
-        <img 
-          src={agent.image} 
-          alt={agent.name}
-          className="w-full h-full object-cover rounded-full"
-          referrerPolicy="no-referrer"
-        />
-      </div>
-      <h4 className="text-2xl font-bold mb-1">{agent.name}</h4>
-      <p className="text-[10px] font-bold text-outline uppercase tracking-[0.2em] mb-6">{agent.specialty}</p>
-      <p className="text-sm text-on-surface-variant leading-relaxed mb-8 px-4">
-        {agent.description}
-      </p>
-      <button className="text-sm font-bold text-primary hover:underline underline-offset-8">
-        View Portfolio
-      </button>
-    </motion.div>
-  );
-}
+    <div className="min-h-screen">
+      <Navbar />
+      
+      <main>
+        <Hero />
 
-
-const Home = () => (
-  <div className="min-h-screen">
-    <Navbar />
-    
-    <main>
-      <Hero />
-
-      <section className="py-24 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-semibold mb-2">Residence in Yogyakarta</h2>
-            <p className="text-on-surface-variant text-sm">We found 242 properties</p>
+        <section className="py-24 max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-semibold mb-2">Residence in Yogyakarta</h2>
+              <p className="text-on-surface-variant text-sm">
+                {isLoading ? 'Loading properties...' : `We found ${estates.length} properties`}
+              </p>
+            </div>
           </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {PROPERTIES.map(property => (
-            <PropertyCard key={property.id} property={property} />
-          ))}
-        </div>
+          
+          {error && <p className="text-sm text-red-600 mb-6">{error}</p>}
 
-        <div className="flex items-center justify-center gap-4 mt-10 text-sm text-outline/70">
-          <button className="w-9 h-9 rounded-full border border-outline/20 flex items-center justify-center">1</button>
-          <button className="w-9 h-9 rounded-full border border-outline/20 flex items-center justify-center">2</button>
-          <button className="w-9 h-9 rounded-full border border-outline/20 flex items-center justify-center">3</button>
-          <button className="w-9 h-9 rounded-full border border-outline/20 flex items-center justify-center">4</button>
-          <button className="w-9 h-9 rounded-full border border-outline/20 flex items-center justify-center">5</button>
-        </div>
-      </section>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {estates.map(property => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
+          </div>
+        </section>
 
-    </main>
+      </main>
 
-    <Footer />
-  </div>
-);
+      <Footer />
+    </div>
+  );
+};
 
 export default function App() {
   return (
@@ -186,8 +186,22 @@ export default function App() {
       <Route path="/" element={<Home />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/property/:id" element={<PropertyDetail />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/new-listing" element={<NewListing />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/new-listing"
+        element={
+          <ProtectedRoute>
+            <NewListing />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

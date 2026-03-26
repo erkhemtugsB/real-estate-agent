@@ -1,9 +1,29 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState<string | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError(null);
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    if (signInError) {
+      setError(signInError.message);
+      return;
+    }
+    navigate('/dashboard');
+  };
+
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center px-8 py-12">
       <div className="w-full max-w-md">
@@ -21,12 +41,14 @@ const SignIn = () => {
             <h1 className="text-3xl font-medium tracking-tight mb-2">Welcome Back</h1>
             <p className="text-on-surface-variant text-sm mb-10">Sign in to manage your portfolio.</p>
 
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-outline mb-2">Email Address</label>
                 <input 
                   type="email" 
                   placeholder="name@example.com"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                   className="w-full px-6 py-4 rounded-xl bg-surface-low border border-outline/10 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>
@@ -38,9 +60,13 @@ const SignIn = () => {
                 <input 
                   type="password" 
                   placeholder="••••••••"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
                   className="w-full px-6 py-4 rounded-xl bg-surface-low border border-outline/10 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>
+
+              {error && <p className="text-xs text-red-600">{error}</p>}
 
               <button className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary-container transition-all flex items-center justify-center gap-2 group">
                 Sign In

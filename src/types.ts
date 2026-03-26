@@ -9,6 +9,19 @@ export interface Property {
   size: 'large' | 'medium' | 'small' | 'wide';
 }
 
+export interface Estate {
+  id: string;
+  title: string;
+  description?: string | null;
+  location?: string | null;
+  price?: number | null;
+  area?: number | null;
+  bed?: number | null;
+  bath?: number | null;
+  images: string[];
+  created_at?: string;
+}
+
 export interface Agent {
   id: string;
   name: string;
