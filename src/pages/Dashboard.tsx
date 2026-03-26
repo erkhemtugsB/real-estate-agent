@@ -35,9 +35,18 @@ const Dashboard = () => {
   const handleDelete = async (estateId: string) => {
     if (!confirm('Delete this listing?')) return;
     setIsDeletingId(estateId);
-    const { error: deleteError } = await supabase.from('estate').delete().eq('id', estateId);
+    const { data: deletedRows, error: deleteError } = await supabase
+      .from('estate')
+      .delete()
+      .eq('id', estateId)
+      .select('id');
     if (deleteError) {
       setError(deleteError.message);
+      setIsDeletingId(null);
+      return;
+    }
+    if (!deletedRows || deletedRows.length === 0) {
+      setError('No listing was deleted. Please try again.');
       setIsDeletingId(null);
       return;
     }

@@ -23,6 +23,11 @@ on public.estate
 for insert
 with check (true);
 
+create policy "authenticated delete estates"
+on public.estate
+for delete
+using (auth.role() = 'authenticated');
+
 insert into storage.buckets (id, name, public)
 values ('estate-images', 'estate-images', true)
 on conflict (id) do nothing;

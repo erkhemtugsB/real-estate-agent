@@ -10,6 +10,31 @@ const SignIn = () => {
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState<string | null>(null);
 
+  React.useEffect(() => {
+    let cancelled = false;
+
+    const redirectIfAuthed = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (cancelled) return;
+      if (data.session?.user) {
+        navigate('/dashboard', { replace: true });
+      }
+    };
+    redirectIfAuthed();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (cancelled) return;
+      if (session?.user) {
+        navigate('/dashboard', { replace: true });
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      authListener?.subscription.unsubscribe();
+    };
+  }, [navigate]);
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
