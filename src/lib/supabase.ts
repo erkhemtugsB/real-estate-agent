@@ -9,10 +9,14 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const STORAGE_BUCKET = (import.meta.env.VITE_SUPABASE_BUCKET as string | undefined) ?? 'estate-images';
 
+export const AUTH_STORAGE_KEY = 'estate-auth-token';
+
 export const supabase = createClient(supabaseUrl ?? '', supabaseAnonKey ?? '', {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: false
+    detectSessionInUrl: false,
+    storageKey: AUTH_STORAGE_KEY,
+    storage: typeof window !== 'undefined' ? window.localStorage : undefined
   }
 });
