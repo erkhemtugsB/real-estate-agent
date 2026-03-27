@@ -17,9 +17,16 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     const load = async () => {
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData.user) {
+        setError('Please sign in to view your listings.');
+        setIsLoading(false);
+        return;
+      }
       const { data, error: fetchError } = await supabase
         .from('estate')
         .select('*')
+        .eq('user_id', userData.user.id)
         .order('created_at', { ascending: false });
       if (fetchError) {
         setError(fetchError.message);

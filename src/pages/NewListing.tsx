@@ -61,6 +61,11 @@ const NewListing = () => {
     setIsSubmitting(true);
     try {
       const imageUrls = await uploadImages();
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData.user) {
+        setError('Please sign in to publish a listing.');
+        return;
+      }
       const toNumber = (value: string) => (value.trim() ? Number(value) : null);
       const priceNumber = parseNumber(price);
       const { error: insertError } = await supabase.from('estate').insert({
@@ -71,7 +76,8 @@ const NewListing = () => {
         area: toNumber(area),
         bed: toNumber(bed),
         bath: toNumber(bath),
-        images: imageUrls
+        images: imageUrls,
+        user_id: userData.user.id
       });
       if (insertError) throw insertError;
       setSuccess('Listing created.');

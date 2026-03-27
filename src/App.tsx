@@ -12,6 +12,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { supabase } from './lib/supabase';
 import { formatMNTCompact } from './lib/format';
+import { PUBLIC_AGENT_ID } from './lib/config';
 
 // Pages
 import SignIn from './pages/SignIn';
@@ -135,6 +136,7 @@ const Home = () => {
       const { data, error: fetchError } = await supabase
         .from('estate')
         .select('*')
+        .eq('user_id', PUBLIC_AGENT_ID)
         .order('created_at', { ascending: false });
       if (fetchError) {
         setError(fetchError.message);

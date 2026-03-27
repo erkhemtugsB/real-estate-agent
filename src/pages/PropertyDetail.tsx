@@ -6,6 +6,7 @@ import { formatMNTCompact } from '../lib/format';
 import { Estate } from '../types';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { PUBLIC_AGENT_ID } from '../lib/config';
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -20,10 +21,13 @@ const PropertyDetail = () => {
         setIsLoading(false);
         return;
       }
+      const { data: userData } = await supabase.auth.getUser();
+      const ownerId = userData.user?.id ?? PUBLIC_AGENT_ID;
       const { data, error: fetchError } = await supabase
         .from('estate')
         .select('*')
         .eq('id', id)
+        .eq('user_id', ownerId)
         .maybeSingle();
       if (fetchError) {
         setError(fetchError.message);
