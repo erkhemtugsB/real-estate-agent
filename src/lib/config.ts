@@ -1,1 +1,1 @@
-export const PUBLIC_AGENT_ID = '992456cb-3fb3-41f6-ac64-73a8514ed72f';
+export const PUBLIC_AGENT_ID = '6c507956-6975-41cd-8d9a-947e088c3af9';
