@@ -252,7 +252,7 @@ const NewListing = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Agent</span>
-                    <span className="text-on-surface">Solongo Batbold</span>
+                    <span className="text-on-surface">Bayarmaa Chuluut</span>
                   </div>
                 </div>
               </div>

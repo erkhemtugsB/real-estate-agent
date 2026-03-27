@@ -45,7 +45,7 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 glass-nav border-b border-outline/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link to="/" className="text-3xl font-normal font-signature">Solongo Batbold</Link>
+        <Link to="/" className="text-3xl font-normal font-signature">Bayarmaa Chuluut</Link>
 
         <div className="hidden md:flex items-center gap-10" />
 

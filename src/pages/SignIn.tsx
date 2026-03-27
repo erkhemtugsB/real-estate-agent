@@ -102,7 +102,7 @@ const SignIn = () => {
           className="w-full max-w-md"
         >
           <div className="mb-12">
-            <Link to="/" className="text-4xl font-normal font-signature mb-2 block">Solongo Batbold</Link>
+            <Link to="/" className="text-4xl font-normal font-signature mb-2 block">Bayarmaa Chuluut</Link>
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-outline">Architectural Integrity in Real Estate</p>
           </div>
 
@@ -212,7 +212,7 @@ const SignIn = () => {
           </div>
 
           <div className="mt-12 text-[10px] font-bold uppercase tracking-widest text-outline">
-            <p>© 2026 Solongo Batbold</p>
+            <p>© 2026 Bayarmaa Chuluut</p>
           </div>
         </motion.div>
       </div>

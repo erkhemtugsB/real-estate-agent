@@ -71,7 +71,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="p-6 sm:p-10 md:p-16">
         <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6 mb-10 md:mb-16">
-          <Link to="/" className="text-3xl font-normal font-signature">Solongo Batbold</Link>
+          <Link to="/" className="text-3xl font-normal font-signature">Bayarmaa Chuluut</Link>
           <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3">
             <Link to="/new-listing" className="bg-primary text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-container transition-all inline-flex items-center gap-2 w-full sm:w-auto justify-center">
               <Plus className="w-5 h-5" />
@@ -158,8 +158,8 @@ const Dashboard = () => {
         </div>
 
         <footer className="mt-32 pt-12 border-t border-outline/10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-outline">
-          <span className="text-on-surface">Solongo Batbold</span>
-          <p>© 2026 Solongo Batbold. Architectural Integrity in Real Estate.</p>
+          <span className="text-on-surface">Bayarmaa Chuluut</span>
+          <p>© 2026 Bayarmaa Chuluut. Architectural Integrity in Real Estate.</p>
         </footer>
       </main>
     </div>

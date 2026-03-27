@@ -54,7 +54,7 @@ const Hero = () => (
             Сайн уу
           </div>
           <div className="mt-6 text-sm text-on-surface-variant tracking-wide">
-            — I’m Solongo Batbold, a real estate curator.
+            — I’m Bayarmaa Chuluut, a real estate curator.
           </div>
 
           <div className="mt-12 text-[12px] uppercase tracking-[0.35em] text-outline/70 flex items-center gap-3">
@@ -72,7 +72,7 @@ const Hero = () => (
           <div className="relative z-10 h-full w-full flex items-end justify-center">
             <img 
               src="/person-shot.png" 
-              alt="Solongo Batbold"
+              alt="Bayarmaa Chuluut"
               className=" max-w-none w-[520px] sm:w-[580px] lg:w-[1000px] object-contain grayscale contrast-110 drop-shadow-[0_45px_60px_rgba(27,28,26,0.2)]"
             />
           </div>
